@@ -16,7 +16,7 @@ namespace Application.Dados
             SetDatabaseInitializer<HrContext>(null);
             SetDatabaseInitializer<HrSimuladoContext>(null);
 
-            AddInterceptor(new EntityMonitorInterceptor());
+            //AddInterceptor(new EntityMonitorInterceptor());
         }
     }
 }
