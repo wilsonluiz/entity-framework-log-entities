@@ -57,11 +57,11 @@ namespace Application.Dados.Repositorios
             return entidade;
         }
 
-        public TEntidade AtualizarAssincrono(TEntidade entidade)
+        public async Task<TEntidade> AtualizarAssincrono(TEntidade entidade)
         {
             Contexto.Set<TEntidade>().Attach(entidade);
             Contexto.Entry(entidade).State = EntityState.Modified;
-            Contexto.SaveChanges();
+            await Contexto.SaveChangesAsync();
 
             return entidade;
         }

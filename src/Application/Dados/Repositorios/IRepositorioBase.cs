@@ -15,7 +15,7 @@ namespace Application.Dados.Repositorios
         List<TEntidade> ListarTodos();
 
         Task<TEntidade> AdicionarAssincrono(TEntidade entidade);
-        TEntidade AtualizarAssincrono(TEntidade entidade);
+        Task<TEntidade> AtualizarAssincrono(TEntidade entidade);
         Task RemoverAssincrono(TEntidade entidade);
         Task<TEntidade> ObterPorIdAssincrono(int id);
         Task<List<TEntidade>> ListarTodosAssincrono();
