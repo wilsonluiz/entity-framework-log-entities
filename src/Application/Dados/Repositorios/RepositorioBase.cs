@@ -2,6 +2,8 @@
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Auxiliares;
+using Application.Dados.Entidades;
 
 namespace Application.Dados.Repositorios
 {
@@ -10,16 +12,20 @@ namespace Application.Dados.Repositorios
         where TEntidade : class
     {
         protected readonly TContexto Contexto;
+        protected readonly Recipiente Recipente;
 
         public RepositorioBase(TContexto contexto)
         {
             Contexto = contexto;
+            Recipente = new Recipiente();
         }
 
         public TEntidade Adicionar(TEntidade entidade)
         {
             Contexto.Set<TEntidade>().Add(entidade);
             Contexto.SaveChanges();
+
+            ProcessarEntidade(entidade);
 
             return entidade;
         }
@@ -54,6 +60,8 @@ namespace Application.Dados.Repositorios
             Contexto.Set<TEntidade>().Add(entidade);
             await Contexto.SaveChangesAsync();
 
+            ProcessarEntidade(entidade);
+
             return entidade;
         }
 
@@ -81,5 +89,13 @@ namespace Application.Dados.Repositorios
         {
             return await Contexto.Set<TEntidade>().ToListAsync();
         }
+
+        private void ProcessarEntidade(TEntidade entidade)
+        {
+            var employee = entidade as Employee;
+            if (employee != null)
+                Recipente.Employees.Add(employee);
+        }
+
     }
 }
