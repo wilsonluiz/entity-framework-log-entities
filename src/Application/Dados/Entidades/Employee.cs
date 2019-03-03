@@ -11,41 +11,37 @@ namespace Application.Dados.Entidades
     {
         [Key]
         [Column("EMPLOYEE_ID")]
-        [Description("")]
-        public int EmployeeId { get; private set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int EmployeeId { get; set; }
 
         [Column("FIRST_NAME")]
-        [Description("")]
-        public string FirstName { get; private set; }
+        public string FirstName { get; set; }
 
         [Column("LAST_NAME")]
-        [Description("")]
-        public string LastName { get; private set; }
+        public string LastName { get; set; }
 
-        [Column("EMAIL")] [Description("")] public string Email { get; private set; }
+        [Column("EMAIL")]
+        public string Email { get; set; }
 
         [Column("PHONE_NUMBER")]
-        [Description("")]
-        public string PhoneNumber { get; private set; }
+        public string PhoneNumber { get; set; }
 
         [Column("HIRE_DATE")]
-        [Description("")]
-        public DateTime HireDate { get; private set; }
+        public DateTime HireDate { get; set; }
 
-        [Column("JOB_ID")] [Description("")] public string JobId { get; private set; }
+        [Column("JOB_ID")]
+        public string JobId { get; set; }
 
-        [Column("SALARY")] [Description("")] public decimal? Salary { get; private set; }
+        [Column("SALARY")]
+        public decimal? Salary { get; set; }
 
         [Column("COMMISSION_PCT")]
-        [Description("")]
-        public decimal? CommissionPct { get; private set; }
+        public decimal? CommissionPct { get; set; }
 
         [Column("MANAGER_ID")]
-        [Description("")]
-        public decimal? ManagerId { get; private set; }
+        public decimal? ManagerId { get; set; }
 
         [Column("DEPARTMENT_ID")]
-        [Description("")]
-        public decimal? DepartmentId { get; private set; }
+        public decimal? DepartmentId { get; set; }
     }
 }
