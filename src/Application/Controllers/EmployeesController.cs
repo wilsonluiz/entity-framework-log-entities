@@ -34,7 +34,27 @@ namespace Application.Controllers
         {
             var funcionario = await _repo.ObterPorIdAssincrono(id);
             if (funcionario == null)
-                return NotFound($"Não foi encontrado empregado #{id}");
+            {
+                var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
+                var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
+                List<Employee> json;
+
+                using (var reader = new StreamReader(caminhoArquivo))
+                {
+                    var dados = reader.ReadToEnd();
+                    json = JsonConvert.DeserializeObject<List<Employee>>(dados);
+                }
+
+                var func = json.FirstOrDefault();
+                if (func == null)
+                    return NotFound($"Não foi encontrado empregado #{id}");
+
+                await _repoSimulado.AdicionarAssincrono(func);
+
+                if (System.IO.File.Exists(caminhoArquivo))
+                    System.IO.File.Delete(caminhoArquivo);
+            }
+            
 
             return Ok(funcionario);
         }
@@ -66,7 +86,7 @@ namespace Application.Controllers
             var repo = (RepositorioBase<HrContext, Employee>) _repo;
             EnivarEntidadeParaArquivo(repo);
 
-            _unidadeDeTrabalho.Finalizar();
+            //_unidadeDeTrabalho.Finalizar();
 
             return Created("", funcionario);
         }
