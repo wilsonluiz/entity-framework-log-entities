@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Dados;
 using Application.Dados.Entidades;
@@ -15,11 +16,17 @@ namespace Application.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IRepositorioBase<HrContext, Employee> _repo;
+        private readonly IRepositorioBase<HrSimuladoContext, Employee> _repoSimulado;
+        private readonly IUnidadeDeTrabalho<HrContext> _unidadeDeTrabalho;
         private const string NomeArquivo = "employees.json";
 
-        public EmployeesController(IRepositorioBase<HrContext, Employee> repo)
+        public EmployeesController(IRepositorioBase<HrContext, Employee> repo,
+            IRepositorioBase<HrSimuladoContext, Employee> repoSimulado,
+            IUnidadeDeTrabalho<HrContext> unidadeDeTrabalho)
         {
             _repo = repo;
+            _repoSimulado = repoSimulado;
+            _unidadeDeTrabalho = unidadeDeTrabalho;
         }
 
         [HttpGet("{id}")]
@@ -58,6 +65,8 @@ namespace Application.Controllers
 
             var repo = (RepositorioBase<HrContext, Employee>) _repo;
             EnivarEntidadeParaArquivo(repo);
+
+            _unidadeDeTrabalho.Finalizar();
 
             return Created("", funcionario);
         }
