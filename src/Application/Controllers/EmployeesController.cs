@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Application.Dados;
 using Application.Dados.Entidades;
@@ -13,6 +15,7 @@ namespace Application.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly IRepositorioBase<HrContext, Employee> _repo;
+        private const string NomeArquivo = "employees.json";
 
         public EmployeesController(IRepositorioBase<HrContext, Employee> repo)
         {
@@ -34,13 +37,24 @@ namespace Application.Controllers
         {
             var funcionarios = await _repo.ListarTodosAssincrono();
 
-            return Ok(funcionarios);
+            var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
+            
+            var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
+
+            List<Employee> json;
+            using (var reader = new StreamReader(caminhoArquivo))
+            {
+                var dados = reader.ReadToEnd();
+                json = JsonConvert.DeserializeObject<List<Employee>>(dados);
+            }
+
+            return Ok(json);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CadastrarFuncionario([FromBody] Employee novoFuncionario)
+        public async Task<IActionResult> CadastrarFuncionario([FromBody] Employee novoFuncionario, [FromQuery] int quantidade = 10)
         {
-            var funcionario = await _repo.AdicionarAssincrono(novoFuncionario);
+            var funcionario = await _repo.AdicionarAssincrono(novoFuncionario, quantidade);
 
             var repo = (RepositorioBase<HrContext, Employee>) _repo;
             EnivarEntidadeParaArquivo(repo);
@@ -76,8 +90,13 @@ namespace Application.Controllers
         {
             var recipiente = repo.Recipente;
             var employees = JsonConvert.SerializeObject(recipiente.Employees);
+            var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
+            var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
 
-            using (var writer = System.IO.File.AppendText("logfile.txt"))
+            if (System.IO.File.Exists(caminhoArquivo))
+                System.IO.File.Delete(caminhoArquivo);
+
+            using (var writer = System.IO.File.AppendText(caminhoArquivo))
             {
                 writer.WriteLine(employees);
             }
