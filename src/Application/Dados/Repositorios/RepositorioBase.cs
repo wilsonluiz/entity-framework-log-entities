@@ -12,7 +12,7 @@ namespace Application.Dados.Repositorios
         where TEntidade : class
     {
         protected readonly TContexto Contexto;
-        protected readonly Recipiente Recipente;
+        public readonly Recipiente Recipente;
 
         public RepositorioBase(TContexto contexto)
         {
