@@ -20,7 +20,15 @@ namespace Application.Dados.Repositorios
             Recipente = new Recipiente();
         }
 
-        public TEntidade Adicionar(TEntidade entidade, int quantidade = 10)
+        public TEntidade Adicionar(TEntidade entidade)
+        {
+            Contexto.Set<TEntidade>().Add(entidade);
+            Contexto.SaveChanges();
+
+            return entidade;
+        }
+
+        public TEntidade Adicionar(TEntidade entidade, int quantidade)
         {
             Contexto.Set<TEntidade>().Add(entidade);
             Contexto.SaveChanges();
@@ -55,7 +63,15 @@ namespace Application.Dados.Repositorios
             return Contexto.Set<TEntidade>().ToList();
         }
 
-        public async Task<TEntidade> AdicionarAssincrono(TEntidade entidade, int quantidade = 10)
+        public async Task<TEntidade> AdicionarAssincrono(TEntidade entidade)
+        {
+            Contexto.Set<TEntidade>().Add(entidade);
+            await Contexto.SaveChangesAsync();
+
+            return entidade;
+        }
+
+        public async Task<TEntidade> AdicionarAssincrono(TEntidade entidade, int quantidade)
         {
             Contexto.Set<TEntidade>().Add(entidade);
             await Contexto.SaveChangesAsync();
