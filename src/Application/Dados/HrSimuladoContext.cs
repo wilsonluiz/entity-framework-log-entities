@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using Application.Dados.Configuracoes;
 using Application.Dados.Entidades;
 using Microsoft.Extensions.Configuration;
 using Oracle.ManagedDataAccess.Client;
@@ -14,6 +15,13 @@ namespace Application.Dados
         }
 
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Configurations.Add(new EmployeeConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         private static OracleConnection ObterConexaoOracle(string stringConexao)
         {
