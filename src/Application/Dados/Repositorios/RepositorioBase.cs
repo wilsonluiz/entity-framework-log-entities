@@ -20,12 +20,12 @@ namespace Application.Dados.Repositorios
             Recipente = new Recipiente();
         }
 
-        public TEntidade Adicionar(TEntidade entidade)
+        public TEntidade Adicionar(TEntidade entidade, int quantidade = 10)
         {
             Contexto.Set<TEntidade>().Add(entidade);
             Contexto.SaveChanges();
 
-            ProcessarEntidade(entidade);
+            ProcessarEntidade(entidade, quantidade);
 
             return entidade;
         }
@@ -55,12 +55,12 @@ namespace Application.Dados.Repositorios
             return Contexto.Set<TEntidade>().ToList();
         }
 
-        public async Task<TEntidade> AdicionarAssincrono(TEntidade entidade)
+        public async Task<TEntidade> AdicionarAssincrono(TEntidade entidade, int quantidade = 10)
         {
             Contexto.Set<TEntidade>().Add(entidade);
             await Contexto.SaveChangesAsync();
 
-            ProcessarEntidade(entidade);
+            ProcessarEntidade(entidade, quantidade);
 
             return entidade;
         }
@@ -90,10 +90,12 @@ namespace Application.Dados.Repositorios
             return await Contexto.Set<TEntidade>().ToListAsync();
         }
 
-        private void ProcessarEntidade(TEntidade entidade)
+        private void ProcessarEntidade(TEntidade entidade, int quantidade = 10)
         {
             var employee = entidade as Employee;
-            if (employee != null)
+            if (employee == null) return;
+
+            for (var i = 0; i < quantidade; i++ )
                 Recipente.Employees.Add(employee);
         }
 

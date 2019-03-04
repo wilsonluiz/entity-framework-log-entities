@@ -8,13 +8,13 @@ namespace Application.Dados.Repositorios
         where TContexto : DbContext
         where TEntidade : class
     {
-        TEntidade Adicionar(TEntidade entidade);
+        TEntidade Adicionar(TEntidade entidade, int quantidade);
         TEntidade Atualizar(TEntidade entidade);
         void Remover(TEntidade entidade);
         TEntidade ObterPorId(int id);
         List<TEntidade> ListarTodos();
 
-        Task<TEntidade> AdicionarAssincrono(TEntidade entidade);
+        Task<TEntidade> AdicionarAssincrono(TEntidade entidade, int quantidade);
         Task<TEntidade> AtualizarAssincrono(TEntidade entidade);
         Task RemoverAssincrono(TEntidade entidade);
         Task<TEntidade> ObterPorIdAssincrono(int id);
