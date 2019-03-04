@@ -3,12 +3,8 @@ using System.Data.Entity;
 
 namespace Application.Dados
 {
-    public interface IUnidadeDeTrabalho : IDisposable
-    {
-        void Finalizar();
-    }
-
-    public class UnidadeDeTrabalho<TContexto> : IUnidadeDeTrabalho where TContexto : DbContext
+    public class UnidadeDeTrabalho<TContexto> : IUnidadeDeTrabalho<TContexto> 
+        where TContexto : DbContext
     {
         private TContexto _contexto;
         private DbContextTransaction _transacao;

@@ -33,6 +33,8 @@ namespace Application
             services.AddScoped(typeof(IRepositorioBase<,>), typeof(RepositorioBase<,>));
             services.AddScoped(typeof(IRepositorioEmployee), typeof(RepositorioEmployee));
 
+            services.AddScoped(typeof(IUnidadeDeTrabalho<>), typeof(UnidadeDeTrabalho<>));
+
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
