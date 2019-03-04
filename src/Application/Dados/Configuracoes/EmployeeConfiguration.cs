@@ -44,13 +44,13 @@ namespace Application.Dados.Configuracoes
             Property(p => p.Salary)
                 .HasColumnName("SALARY");
 
-            Property(p => p.Salary)
+            Property(p => p.CommissionPct)
                 .HasColumnName("COMMISSION_PCT");
 
-            Property(p => p.Salary)
+            Property(p => p.ManagerId)
                 .HasColumnName("MANAGER_ID");
 
-            Property(p => p.Salary)
+            Property(p => p.DepartmentId)
                 .HasColumnName("DEPARTMENT_ID");
         }
     }
