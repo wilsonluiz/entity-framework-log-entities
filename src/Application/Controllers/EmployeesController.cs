@@ -1,8 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.IO;
+using System.Threading.Tasks;
 using Application.Dados;
 using Application.Dados.Entidades;
 using Application.Dados.Repositorios;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace Application.Controllers
 {
@@ -40,6 +42,9 @@ namespace Application.Controllers
         {
             var funcionario = await _repo.AdicionarAssincrono(novoFuncionario);
 
+            var repo = (RepositorioBase<HrContext, Employee>) _repo;
+            EnivarEntidadeParaArquivo(repo);
+
             return Created("", funcionario);
         }
 
@@ -65,6 +70,17 @@ namespace Application.Controllers
             await _repo.RemoverAssincrono(funcionario);
 
             return NoContent();
+        }
+
+        private void EnivarEntidadeParaArquivo(RepositorioBase<HrContext, Employee> repo)
+        {
+            var recipiente = repo.Recipente;
+            var employees = JsonConvert.SerializeObject(recipiente.Employees);
+
+            using (var writer = System.IO.File.AppendText("logfile.txt"))
+            {
+                writer.WriteLine(employees);
+            }
         }
     }
 }
