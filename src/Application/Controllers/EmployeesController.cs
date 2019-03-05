@@ -33,30 +33,28 @@ namespace Application.Controllers
         public async Task<IActionResult> ObterFuncionarioPorId([FromRoute] int id)
         {
             var funcionario = await _repo.ObterPorIdAssincrono(id);
-            if (funcionario == null)
+            if (funcionario != null) return Ok(funcionario);
+
+            var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
+            var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
+            List<Employee> json;
+
+            using (var reader = new StreamReader(caminhoArquivo))
             {
-                var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
-                var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
-                List<Employee> json;
-
-                using (var reader = new StreamReader(caminhoArquivo))
-                {
-                    var dados = reader.ReadToEnd();
-                    json = JsonConvert.DeserializeObject<List<Employee>>(dados);
-                }
-
-                var func = json.FirstOrDefault();
-                if (func == null)
-                    return NotFound($"Não foi encontrado empregado #{id}");
-
-                await _repoSimulado.AdicionarAssincrono(func);
-
-                if (System.IO.File.Exists(caminhoArquivo))
-                    System.IO.File.Delete(caminhoArquivo);
+                var dados = reader.ReadToEnd();
+                json = JsonConvert.DeserializeObject<List<Employee>>(dados);
             }
-            
 
-            return Ok(funcionario);
+            var func = json.FirstOrDefault();
+            if (func == null)
+                return NotFound($"Não foi encontrado empregado #{id}");
+
+            await _repoSimulado.AdicionarAssincrono(func);
+
+            if (System.IO.File.Exists(caminhoArquivo))
+                System.IO.File.Delete(caminhoArquivo);
+
+            return Ok(func);
         }
 
         [HttpGet]
@@ -65,8 +63,10 @@ namespace Application.Controllers
             var funcionarios = await _repo.ListarTodosAssincrono();
 
             var diretorioBase = AppDomain.CurrentDomain.BaseDirectory;
-            
             var caminhoArquivo = Path.Combine(diretorioBase, NomeArquivo);
+
+            if (!System.IO.File.Exists(caminhoArquivo))
+                return Ok(funcionarios);
 
             List<Employee> json;
             using (var reader = new StreamReader(caminhoArquivo))
@@ -82,8 +82,8 @@ namespace Application.Controllers
         public async Task<IActionResult> CadastrarFuncionario([FromBody] Employee novoFuncionario, [FromQuery] int quantidade = 10)
         {
             var funcionario = await _repo.AdicionarAssincrono(novoFuncionario, quantidade);
-
             var repo = (RepositorioBase<HrContext, Employee>) _repo;
+
             EnivarEntidadeParaArquivo(repo);
 
             //_unidadeDeTrabalho.Finalizar();
