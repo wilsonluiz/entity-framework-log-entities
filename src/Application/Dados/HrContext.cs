@@ -22,6 +22,7 @@ namespace Application.Dados
             
         }
 
+        public DbSet<Arquivo> Arquivos { get; set; }
         public DbSet<Country> Countries { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -29,7 +30,6 @@ namespace Application.Dados
         public DbSet<JobHistory> JobHistories { get; set; }
         public DbSet<Region> Regions { get; set; }
         public DbSet<Location> Locations { get; set; }
-
 
         private static OracleConnection ObterConexao(string stringConexao)
         {
