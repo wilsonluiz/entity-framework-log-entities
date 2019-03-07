@@ -58,6 +58,11 @@ namespace Application.Dados.Repositorios
             return Contexto.Set<TEntidade>().Find(id);
         }
 
+        public TEntidade ObterPorId(string id)
+        {
+            return Contexto.Set<TEntidade>().Find(id);
+        }
+
         public List<TEntidade> ListarTodos()
         {
             return Contexto.Set<TEntidade>().ToList();
@@ -97,6 +102,11 @@ namespace Application.Dados.Repositorios
         }
 
         public async Task<TEntidade> ObterPorIdAssincrono(int id)
+        {
+            return await Contexto.Set<TEntidade>().FindAsync(id);
+        }
+
+        public async Task<TEntidade> ObterPorIdAssincrono(string id)
         {
             return await Contexto.Set<TEntidade>().FindAsync(id);
         }

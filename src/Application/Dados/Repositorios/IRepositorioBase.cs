@@ -13,6 +13,7 @@ namespace Application.Dados.Repositorios
         TEntidade Atualizar(TEntidade entidade);
         void Remover(TEntidade entidade);
         TEntidade ObterPorId(int id);
+        TEntidade ObterPorId(string id);
         List<TEntidade> ListarTodos();
 
         Task<TEntidade> AdicionarAssincrono(TEntidade entidade);
@@ -20,6 +21,7 @@ namespace Application.Dados.Repositorios
         Task<TEntidade> AtualizarAssincrono(TEntidade entidade);
         Task RemoverAssincrono(TEntidade entidade);
         Task<TEntidade> ObterPorIdAssincrono(int id);
+        Task<TEntidade> ObterPorIdAssincrono(string id);
         Task<List<TEntidade>> ListarTodosAssincrono();
     }
 }
