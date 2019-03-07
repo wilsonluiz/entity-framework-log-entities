@@ -7,7 +7,8 @@ namespace Application.Dados.Entidades
     public class Arquivo
     {
         [Column("FILE_ID")]
-        public Guid Id { get; set; } = new Guid();
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Id { get; set; }
 
         [Column("FILE_DATA")]
         public DateTime DataCriacao { get; set; }
